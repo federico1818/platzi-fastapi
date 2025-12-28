@@ -2,12 +2,12 @@ services:
     fastapi:
         image: platzi-fastapi
         build:
-            context: .
-            dockerfile: Dockerfile
+            context: ..
+            dockerfile: docker/Dockerfile
         container_name: platzi-fastapi
         restart: always
         volumes:
-            - ..:/app
+            - ../app:/app
             - venv:/opt/venv
         ports:
             - "8000:8000"
