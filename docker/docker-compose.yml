@@ -7,11 +7,12 @@ services:
         container_name: platzi-fastapi
         restart: always
         volumes:
-            - ../app:/app
+            - ..:/app
+            - ../requirements.txt:/config/requirements.txt
             - venv:/opt/venv
         ports:
             - "8000:8000"
         working_dir: /app
-        command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+        command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 volumes:
     venv:

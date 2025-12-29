@@ -1,10 +1,7 @@
 from fastapi import FastAPI
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from pydantic import BaseModel
-
-class Customer(BaseModel):
-    name: str
+from app.schemas.customer_create_schema import CustomerCreateSchema
 
 app = FastAPI()
 
@@ -20,9 +17,13 @@ country_timezones = {
 }
 
 @app.get("/time/{iso_code}")
-async def root(iso_code: str):
+async def time(iso_code: str):
     return {
         "time": datetime.now(
             ZoneInfo(country_timezones[iso_code.upper()])
         ).strftime('%H:%M')
     }
+
+@app.post("/customers")
+async def create_customer(customer_create_schema: CustomerCreateSchema):
+    return customer_create_schema
