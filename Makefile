@@ -1,6 +1,6 @@
 SHELL = /bin/sh
 
-PHONY: install start stop in
+PHONY: install start stop in build logs
 
 install:
 	@docker compose -f docker/docker-compose.yml -p platzi-fastapi \
@@ -22,3 +22,6 @@ build:
 	fi; \
 	./deploy/deploy.sh $(version)
 	@echo "Done"
+
+logs:
+	@docker logs platzi-fastapi

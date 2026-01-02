@@ -1,8 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from sqlmodel import Session
+from app.db.session import create_db, get_session
+from app.models.orm.customer import Customer
 from app.schemas.customer_create_schema import CustomerCreateSchema
-from app.db.session import create_db
 
 app = FastAPI(lifespan=create_db)
 
@@ -26,5 +28,9 @@ async def time(iso_code: str):
     }
 
 @app.post("/customers")
-async def create_customer(customer_create_schema: CustomerCreateSchema):
-    return customer_create_schema
+async def create_customer(customer_create_schema: CustomerCreateSchema, session: Session = Depends(get_session)):
+    customer = Customer.from_orm(customer_create_schema)
+    session.add(customer)
+    session.commit()
+    session.refresh(customer)
+    return customer
