@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from sqlmodel import Session
+from sqlmodel import Session, select
 from app.db.session import create_db, get_session
 from app.models.orm.customer import Customer
 from app.schemas.customer_create_schema import CustomerCreateSchema
@@ -34,3 +34,7 @@ async def create_customer(customer_create_schema: CustomerCreateSchema, session:
     session.commit()
     session.refresh(customer)
     return customer
+
+@app.get("/customers", response_model=list[Customer])
+async def get_customers(session: Session = Depends(get_session)):
+    return session.exec(select(Customer)).all()
