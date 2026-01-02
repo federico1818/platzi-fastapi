@@ -2,8 +2,9 @@ from fastapi import FastAPI
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from app.schemas.customer_create_schema import CustomerCreateSchema
+from app.db.session import create_db
 
-app = FastAPI()
+app = FastAPI(lifespan=create_db)
 
 @app.get("/")
 async def root():

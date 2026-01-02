@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from app.models.base.customer_base import CustomerBase
 
-class CustomerCreateSchema(BaseModel):
-    name: str
+class CustomerCreateSchema(CustomerBase):
+    pass
